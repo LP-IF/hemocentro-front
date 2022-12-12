@@ -11,3 +11,20 @@
   font-size: 30px;
   font-style: italic;
 }
+
+.img-home {
+  width: 25px;
+  height: 25px;
+  position: fixed;
+  z-index: 1;
+  margin-top: 45px;
+  margin-left: 20px;
+}
+
+.btt-home{
+  color: black;
+}
+
+.btt-home:hover{
+  cursor: pointer;
+}
