@@ -8,8 +8,6 @@ function Header() {
   return (
     <div>
       <div>
-        {/* <button className='btt-home'><img className="img-home" src={img} /></button> */}
-        {/* <NavLink to="/">teste</NavLink> */}
         <Link to="/">
           <img
             title="Ir para a página principal"

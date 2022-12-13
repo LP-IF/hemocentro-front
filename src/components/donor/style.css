@@ -1,0 +1,42 @@
+.donor-title{
+  text-align: center;
+  font-size: 25px;
+  margin: 40px 0px;
+}
+
+.divisao{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  border: 1px solid black;
+}
+
+.donations{
+  font-size: 20px;
+}
+
+.donate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.donate > button{
+  padding: 2px 5px 2px 5px;
+}
+
+.req-donate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.is-rested,.is-fed{
+  margin: 5px;
+  display: flex;
+  gap: 10px;
+}
+
