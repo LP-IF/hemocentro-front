@@ -1,18 +1,31 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import "./style.css";
 
 function Donor() {
   const [donate, setDonate] = useState(false);
-  const [rest, setRest] = useState("");
-  const [feed, setFeed] = useState("");
 
-  const handleDonate = () => {
-    setDonate(true);
-  };
+  const [donDone, setDonDone] = useState("")
 
-  if (feed === "yes" && rest === "yes") {
-    alert("teste"); //fazer esquema que se clicar ok, ou no caso, se doar msm, zerar valores de rest e feed
+  const rest = useRef("n")
+  const feed = useRef("n")
+
+
+  function verifyReq(){
+    let r = rest.current.value;
+    let f = feed.current.value;
+    if (r === "y" && f === "y"){
+      setDonate(true);
+    }else if(r !== "y" || f !== "y"){
+      setDonate(false);
+    }
+  }
+
+  const handleDonation = () =>{
+    setDonDone("Obrigado pela doação!")
+    rest.current.value = "n";
+    feed.current.value = "n";
+    setDonate(false);
   }
 
   return (
@@ -24,36 +37,33 @@ function Donor() {
         <div className="donations">Você já fez x doações</div>
         <div className="donate">
           <p>Aqui você pode fazer uma doação:</p>
-          <button onClick={handleDonate}>Doar!</button>
+          <button onClick={handleDonation} disabled={!donate}>Doar!</button>
           <div className="req-donate">
             <p>Para poder doar, você precisa responder as perguntas abaixo:</p>
             <div className="is-rested">
               <p>Está descansado?</p>
               <select
                 name="rested"
-                onChange={(e) => setRest(e.target.value.toString())}
+                ref={rest}
+                onClick={verifyReq}
               >
-                <option value="default" selected>
-                  ---
-                </option>
-                <option value="yes">Sim</option>
-                <option value="no">Não</option>
+                <option value="y">Sim</option>
+                <option value="n" selected>Não</option>
               </select>
             </div>
             <div className="is-fed">
               <p>Está alimentado?</p>
               <select
                 name="fed"
-                onChange={(e) => setFeed(e.target.value.toString())}
-              >
-                <option value="default" selected>
-                  ---
-                </option>
-                <option value="yes">Sim</option>
-                <option value="no">Não</option>
+                ref={feed}
+                onClick={verifyReq}
+                >
+                <option value="y">Sim</option>
+                <option value="n" selected>Não</option>
               </select>
             </div>
           </div>
+          <p>{donDone}</p>
         </div>
       </div>
     </div>
