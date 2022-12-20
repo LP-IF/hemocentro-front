@@ -1,0 +1,15 @@
+.admin-title{
+  text-align: center;
+  font-size: 25px;
+  margin: 40px 0px;
+}
+
+.div-admin{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.admin1 > p,.admin2 > p{
+  font-size: 20px;
+}
