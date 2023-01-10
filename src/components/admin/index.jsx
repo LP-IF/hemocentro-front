@@ -1,4 +1,5 @@
 // O admin poderia ver quantas doações tem e a lista de doadores
+//fazer map lendo todos os itens da lista da api
 import './style.css'
 
 function Admin(){
