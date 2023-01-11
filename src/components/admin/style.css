@@ -13,3 +13,16 @@
 .admin1 > p,.admin2 > p{
   font-size: 20px;
 }
+
+.lista-doadores > p{
+  margin-bottom: 10px;
+}
+
+.list-donors{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 3px;
+  gap: 5px;
+  align-items: center;
+}
