@@ -9,6 +9,7 @@ import api from "../../services/api";
 
 function Admin() {
   const [doadores, setDoadores] = useState([]);
+  const [tiposSangue, setTiposSangue] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -17,10 +18,21 @@ function Admin() {
     })();
   }, []);
 
-  console.log(doadores);
+  useEffect(() => {
+    (async () => {
+      const response = await api.get("/tiposSangue");
+      setTiposSangue(response.data);
+    })();
+  });
+
   let donors = {};
   donors = doadores.map(function (doadores) {
     return (donors = doadores);
+  });
+
+  let bloodTypes = {};
+  bloodTypes = tiposSangue.map(function (tiposSangue) {
+    return (bloodTypes = tiposSangue);
   });
 
   return (
@@ -34,7 +46,7 @@ function Admin() {
               {donors.map((doador) => {
                 return (
                   <li className="li-list-donors" key={doador.nome}>
-                      <span>{doador.nome}</span>
+                    <span>{doador.nome}</span>
                   </li>
                 );
               })}
@@ -42,7 +54,19 @@ function Admin() {
           </div>
         </div>
         <div className="admin2">
-          <p>Como estão os estoques:</p>
+          <div className="lista-tipos-sangue">
+            <p>Como estão os estoques:</p>
+            <ul className="list-types">
+              {bloodTypes.map((tiposSangue) => {
+                return (
+                  <li className="li-list-types" key={tiposSangue.tipo}>
+                    <span className="tipo-sangue">{tiposSangue.tipo}</span>
+                    <span className="quantidade-sangue">{tiposSangue.quantidade}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

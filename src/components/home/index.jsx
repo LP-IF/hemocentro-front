@@ -59,6 +59,8 @@ function Home() {
     };
   }, []);
 
+  
+
   return (
     <div>
       <div className="user-type">

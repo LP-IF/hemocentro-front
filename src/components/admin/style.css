@@ -10,11 +10,8 @@
   justify-content: space-evenly;
 }
 
-.admin1 > p,.admin2 > p{
+.lista-doadores > p,.lista-tipos-sangue > p{
   font-size: 20px;
-}
-
-.lista-doadores > p{
   margin-bottom: 10px;
 }
 
@@ -25,4 +22,12 @@
   margin: 3px;
   gap: 5px;
   align-items: center;
+}
+
+.list-types{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 3px 5px 3px 3px;
+  gap: 5px;
 }
