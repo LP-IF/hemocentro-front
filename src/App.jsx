@@ -14,8 +14,8 @@ function App() {
       <Header />
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          {/* <Route path="/" element={<Donor />}></Route> */}
-          {/* <Route path="/" element={<Admin />}>/</Route> */}
+          <Route path="/donor" element={<Donor />}></Route>
+          <Route path="/admin" element={<Admin />}>/</Route>
         </Routes>
       </BrowserRouter>
     </div>

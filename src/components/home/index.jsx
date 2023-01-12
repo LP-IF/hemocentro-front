@@ -47,6 +47,7 @@ function Home() {
       const response = await api.get(`/doador/${cpf}`);
       const data = await response.json();
       localStorage.setItem("donor", JSON.stringify(data));
+      console.log(data)
       navigate("/donor");
     } catch (error) {
       setDonorNotFound(error);
@@ -74,11 +75,11 @@ function Home() {
       <div className="user">
         {donor && (
           <div className="isDonor">
-            <form action="#urldaapipramandaroform" method="post">
+            <form action="http://localhost:8080/api/doadores" method="get">
               <div>
-                <span>Digite seu CPF </span>
+                <span>Digite seu CPF</span>
                 <input
-                  type="number"
+                  type="text"
                   value={cpf}
                   onChange={(e) => setCpf(e.target.value)}
                 />
@@ -98,14 +99,14 @@ function Home() {
         )}
         {newDonor && (
           <div className="registerDonor">
-            <form action="#urldaapipramandaroform" method="post">
+            <form action="http://localhost:8080/api/doadores" method="post">
               <div className="name">
                 <span>Digite seu Nome</span>
-                <input type="text" id="name" placeholder="Nome" />
+                <input type="text" id="nome" placeholder="Nome" />
               </div>
               <div className="age">
-                <span>Digite sua Idade</span>
-                <input type="number" id="age" placeholder="Idade" />
+                <span>Digite sua data de nascimento</span>
+                <input type="number" id="dataNascimento" placeholder="Idade" />
               </div>
               <div>
                 <span>Digite seu CPF</span>
@@ -119,7 +120,7 @@ function Home() {
         )}
         {admin && (
           <div className="isAdmin">
-            <form action="#urldaapipramandaroform" method="post">
+            <form action="http://localhost:8080/api/administradores" method="get">
               <div>
                 <span>Digite seu email </span>
                 <input type="email" placeholder="Email" />
