@@ -17,6 +17,10 @@ function Home() {
 
   const [cpf, setCpf] = useState("");
 
+  const [nome, setNome] = useState("");
+  const [bday, setBday] = useState("");
+  const [newCpf, setNewCpf] = useState("");
+
   const handleDonor = () => {
     setNewDonor(false);
     setAdmin(false);
@@ -40,27 +44,35 @@ function Home() {
     setNewDonor(true);
   };
 
-  //consultar api para verificar existencia de cpf
-  //se retornar ok mandar para page do doador
   async function verifyDonor(cpf) {
     try {
-      const response = await api.get(`/doador/${cpf}`);
-      const data = await response.json();
+      const response = await api.get(`/doadores/${cpf}`);
+      const data = response.data;
       localStorage.setItem("donor", JSON.stringify(data));
-      console.log(data)
+      console.log(data);
       navigate("/donor");
     } catch (error) {
-      setDonorNotFound(error);
+      alert("erro");
+      setDonorNotFound(error.message);
     }
   }
 
-  useEffect(() => {
-    return () => {
-      setDonorNotFound("");
-    };
-  }, []);
-
-  
+  async function registerDonor(nome, dataNascimento, cpf) {
+    try {
+      const response = await api.post(`/doadores`, {
+        nome: nome,
+        dataNascimento: dataNascimento,
+        cpf: cpf
+      });
+      if (response.status === 200) {
+        const data = response.data;
+        console.log(data);
+      }
+    } catch (error) {
+      alert("erro");
+      setDonorNotFound(error.message);
+    }
+  }
 
   return (
     <div>
@@ -75,7 +87,12 @@ function Home() {
       <div className="user">
         {donor && (
           <div className="isDonor">
-            <form action="http://localhost:8080/api/doadores" method="get">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                verifyDonor(cpf);
+              }}
+            >
               <div>
                 <span>Digite seu CPF</span>
                 <input
@@ -84,9 +101,7 @@ function Home() {
                   onChange={(e) => setCpf(e.target.value)}
                 />
               </div>
-              <button type="submit" onClick={() => verifyDonor(cpf)}>
-                Entrar
-              </button>
+              <button type="submit">Entrar</button>
             </form>
             <div>
               <p>{donorNotFound}</p>
@@ -99,28 +114,52 @@ function Home() {
         )}
         {newDonor && (
           <div className="registerDonor">
-            <form action="http://localhost:8080/api/doadores" method="post">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                registerDonor(nome, bday, newCpf);
+              }}
+            >
               <div className="name">
                 <span>Digite seu Nome</span>
-                <input type="text" id="nome" placeholder="Nome" />
+                <input
+                  type="text"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  id="nome"
+                  placeholder="Nome"
+                />
               </div>
               <div className="age">
                 <span>Digite sua data de nascimento</span>
-                <input type="number" id="dataNascimento" placeholder="Idade" />
+                <input
+                  type="text"
+                  value={bday}
+                  onChange={(e) => setBday(e.target.value)}
+                  id="dataNascimento"
+                  placeholder="Idade"
+                />
               </div>
               <div>
                 <span>Digite seu CPF</span>
-                <input type="number" id="cpf" placeholder="CPF" />
+                <input
+                  type="text"
+                  value={newCpf}
+                  onChange={(e) => setNewCpf(e.target.value)}
+                  id="newCpf"
+                  placeholder="CPF"
+                />
               </div>
-              <button type="submit" onClick={sendForm}>
-                Cadastrar
-              </button>
+              <button type="submit">Cadastrar</button>
             </form>
           </div>
         )}
         {admin && (
           <div className="isAdmin">
-            <form action="http://localhost:8080/api/administradores" method="get">
+            <form
+              action="http://localhost:8080/api/administradores"
+              method="get"
+            >
               <div>
                 <span>Digite seu email </span>
                 <input type="email" placeholder="Email" />

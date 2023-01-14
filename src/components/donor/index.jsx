@@ -6,31 +6,26 @@ import "./style.css";
 
 function Donor() {
   const [donate, setDonate] = useState(false);
-  const [donationsNumber, setDonationsNumber] = useState(null)
+  //const [donationsNumber, setDonationsNumber] = useState(null)
   const [donDone, setDonDone] = useState("")
 
   const rest = useRef("n")
   const feed = useRef("n")
-  let donor;
+  
+  let donor = JSON.parse(localStorage.getItem("donor"));
 
-  if (localStorage.getItem('donor')) {
-    donor = localStorage.getItem('donor');
-  } else {
-    alert("doador nao encontrado!")
-  }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const response = await api.get(`/doador/doacoes`);
+  //       setDonationsNumber(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await api.get(`/doador/doacoes`);
-        setDonationsNumber(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchData();
-  }, [donate]);
+  //   fetchData();
+  // }, [donate]);
 
   function verifyReq(){
     let r = rest.current.value;
@@ -68,7 +63,7 @@ function Donor() {
   return (
     <div>
       {/* chamar api e pegar nome -> Olá {nomedofulano}! */}
-      <div className="donor-title">Olá ${`donor.nome`}!</div>
+      <div className="donor-title">Olá {(donor.nome)}!</div>
       <div className="divisao">
         {/* chamar api e pegar quantidade de vezes que o fulano já doou */}
         <div className="donations">Você já fez ${`donationsNumber`} doações</div>
