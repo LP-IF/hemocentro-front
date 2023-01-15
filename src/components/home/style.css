@@ -24,7 +24,9 @@
   gap: 10px;
 }
 
-.registerDonor > form{
+
+
+.registerDonor > form, .registerDonor{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,4 +41,5 @@
   text-align: center;
   gap: 10px;
 }
+
 

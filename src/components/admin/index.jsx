@@ -1,5 +1,4 @@
 // O admin poderia ver quantas doações tem e a lista de doadores
-//fazer map lendo todos os itens da lista da api
 //guardar nome do usuario no localStoraged?
 
 import { useEffect, useState } from "react";
@@ -10,6 +9,9 @@ import api from "../../services/api";
 function Admin() {
   const [doadores, setDoadores] = useState([]);
   const [tiposSangue, setTiposSangue] = useState([]);
+
+  
+  let adm = JSON.parse(localStorage.getItem("adm"));
 
   useEffect(() => {
     (async () => {
@@ -24,7 +26,7 @@ function Admin() {
       setTiposSangue(response.data);
     })();
   });
-
+  
   let donors = {};
   donors = doadores.map(function (doadores) {
     return (donors = doadores);
@@ -37,7 +39,7 @@ function Admin() {
 
   return (
     <div>
-      <div className="admin-title">Bem vindo $nomedoadmin!</div>
+      <div className="admin-title">Bem vindo {(adm.nome)}!</div>
       <div className="div-admin">
         <div className="admin1">
           <div className="lista-doadores">

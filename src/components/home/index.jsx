@@ -1,7 +1,7 @@
 //precisa colocar action dos forms
 //precisa fazer esquema de ver se admin existe igual tem pro doador
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./style.css";
 
 import api from "../../services/api";
@@ -10,12 +10,15 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const navigate = useNavigate();
 
+
   const [donor, setDonor] = useState(false);
   const [admin, setAdmin] = useState(false);
   const [newDonor, setNewDonor] = useState(false);
-  const [donorNotFound, setDonorNotFound] = useState("");
+  const [userNotFound, setUserNotFound] = useState("");
+  const [donorFound, setDonorFound] = useState("");
 
   const [cpf, setCpf] = useState("");
+  const [email, setEmail] = useState("");
 
   const [nome, setNome] = useState("");
   const [bday, setBday] = useState("");
@@ -24,12 +27,6 @@ function Home() {
   const handleDonor = () => {
     setNewDonor(false);
     setAdmin(false);
-    setDonor(true);
-  };
-
-  const sendForm = () => {
-    setNewDonor(false);
-    alert("Cadastro feito com sucesso"); //deixar assim ou fazer insertHTML ?
     setDonor(true);
   };
 
@@ -53,26 +50,40 @@ function Home() {
       navigate("/donor");
     } catch (error) {
       alert("erro");
-      setDonorNotFound(error.message);
+      setUserNotFound("Doador não encontrado!")
     }
   }
 
-  async function registerDonor(nome, dataNascimento, cpf) {
+  async function registerDonor(nome, bday, newCpf) {
     try {
-      const response = await api.post(`/doadores`, {
+      await api.post(`/doadores`, {
         nome: nome,
-        dataNascimento: dataNascimento,
-        cpf: cpf
+        dataNascimento: bday,
+        cpf: newCpf,
       });
-      if (response.status === 200) {
-        const data = response.data;
-        console.log(data);
-      }
+      setDonorFound("Cadastro de doador feito com sucesso!");
+      setTimeout(function(){
+        setNewDonor(false);
+        setDonor(true);
+      }, 5000);
     } catch (error) {
       alert("erro");
-      setDonorNotFound(error.message);
     }
   }
+
+  async function verifyAdm(email) {
+    try {
+      const response = await api.get(`/administradores/${email}`);
+      const data = response.data;
+      localStorage.setItem("adm", JSON.stringify(data));
+      console.log(data);
+      navigate("/admin");
+    } catch (error) {
+      alert("erro");
+      setUserNotFound("Administrador não encontrado!")
+    }
+  }
+
 
   return (
     <div>
@@ -104,7 +115,7 @@ function Home() {
               <button type="submit">Entrar</button>
             </form>
             <div>
-              <p>{donorNotFound}</p>
+              <p>{userNotFound}</p>
             </div>
             <a href="#" onClick={handleNewDonor}>
               É a sua primeira vez?
@@ -152,20 +163,28 @@ function Home() {
               </div>
               <button type="submit">Cadastrar</button>
             </form>
+            <p>{donorFound}</p>
           </div>
         )}
         {admin && (
           <div className="isAdmin">
             <form
-              action="http://localhost:8080/api/administradores"
-              method="get"
+               onSubmit={(e) => {
+                e.preventDefault();
+                verifyAdm(email);
+              }}
             >
               <div>
                 <span>Digite seu email </span>
-                <input type="email" placeholder="Email" />
+                <input type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  id="email"
+                  placeholder="email" />
               </div>
               <button type="submit">Entrar</button>
             </form>
+            <p>{userNotFound}</p>
           </div>
         )}
       </div>
