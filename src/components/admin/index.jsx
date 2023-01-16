@@ -62,7 +62,7 @@ function Admin() {
               {bloodTypes.map((tiposSangue) => {
                 return (
                   <li className="li-list-types" key={tiposSangue.tipo}>
-                    <span className="tipo-sangue">{tiposSangue.tipo}</span>
+                    <span className="tipo-sangue">{tiposSangue.tipo} {tiposSangue.fatorRh}</span>
                     <span className="quantidade-sangue">{tiposSangue.quantidade}</span>
                   </li>
                 );

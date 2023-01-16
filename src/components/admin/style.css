@@ -31,3 +31,9 @@
   margin: 3px 5px 3px 3px;
   gap: 5px;
 }
+
+.li-list-types{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
