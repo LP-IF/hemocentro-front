@@ -1,7 +1,7 @@
 //precisa colocar action dos forms
 //precisa fazer esquema de ver se admin existe igual tem pro doador
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./style.css";
 
 import api from "../../services/api";
@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
-
 
   const [donor, setDonor] = useState(false);
   const [admin, setAdmin] = useState(false);
@@ -23,6 +22,8 @@ function Home() {
   const [nome, setNome] = useState("");
   const [bday, setBday] = useState("");
   const [newCpf, setNewCpf] = useState("");
+  const [bloodTypes, setBloodTypes] = useState([]);
+  const [bloodType, setBloodType] = useState("");
 
   const handleDonor = () => {
     setNewDonor(false);
@@ -41,6 +42,13 @@ function Home() {
     setNewDonor(true);
   };
 
+  useEffect(() => {
+    (async () => {
+      const response = await api.get("/tiposSangue");
+      setBloodTypes(response.data);
+    })();
+  }, []);
+
   async function verifyDonor(cpf) {
     try {
       const response = await api.get(`/doadores/${cpf}`);
@@ -49,25 +57,27 @@ function Home() {
       console.log(data);
       navigate("/donor");
     } catch (error) {
-      alert("erro");
-      setUserNotFound("Doador não encontrado!")
+      alert(error);
+      setUserNotFound("Doador não encontrado!");
     }
   }
 
-  async function registerDonor(nome, bday, newCpf) {
+  async function registerDonor(nome, bday, newCpf, bloodType) {
+    
     try {
       await api.post(`/doadores`, {
         nome: nome,
         dataNascimento: bday,
         cpf: newCpf,
+        tipoSangueId: parseInt(bloodType),
       });
       setDonorFound("Cadastro de doador feito com sucesso!");
-      setTimeout(function(){
+      setTimeout(function () {
         setNewDonor(false);
         setDonor(true);
       }, 5000);
     } catch (error) {
-      alert("erro");
+      alert(error);
     }
   }
 
@@ -79,11 +89,10 @@ function Home() {
       console.log(data);
       navigate("/admin");
     } catch (error) {
-      alert("erro");
-      setUserNotFound("Administrador não encontrado!")
+      alert(error);
+      setUserNotFound("Administrador não encontrado!");
     }
   }
-
 
   return (
     <div>
@@ -128,7 +137,7 @@ function Home() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                registerDonor(nome, bday, newCpf);
+                registerDonor(nome, bday, newCpf, bloodType);
               }}
             >
               <div className="name">
@@ -148,7 +157,7 @@ function Home() {
                   value={bday}
                   onChange={(e) => setBday(e.target.value)}
                   id="dataNascimento"
-                  placeholder="Idade"
+                  placeholder="xx/xx/xxxx"
                 />
               </div>
               <div>
@@ -161,6 +170,23 @@ function Home() {
                   placeholder="CPF"
                 />
               </div>
+              <div>
+                <div>
+                  <label>Tipo Sanguíneo</label>
+                  <select
+                    id="bloodType"
+                    name="bloodType"
+                    value={bloodType}
+                    onChange={(e) => setBloodType(e.target.value)}
+                  >
+                    {bloodTypes.map((bloodTypes) => (
+                      <option key={bloodTypes.id} value={bloodTypes.id}>
+                        {bloodTypes.tipo} {bloodTypes.fatorRh}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
               <button type="submit">Cadastrar</button>
             </form>
             <p>{donorFound}</p>
@@ -169,18 +195,20 @@ function Home() {
         {admin && (
           <div className="isAdmin">
             <form
-               onSubmit={(e) => {
+              onSubmit={(e) => {
                 e.preventDefault();
                 verifyAdm(email);
               }}
             >
               <div>
                 <span>Digite seu email </span>
-                <input type="email"
+                <input
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   id="email"
-                  placeholder="email" />
+                  placeholder="email"
+                />
               </div>
               <button type="submit">Entrar</button>
             </form>

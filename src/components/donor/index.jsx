@@ -1,31 +1,18 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import api from "../../services/api";
 
 
 import "./style.css";
 
 function Donor() {
+
+  let donor = JSON.parse(localStorage.getItem("donor"));
+  
   const [donate, setDonate] = useState(false);
-  //const [donationsNumber, setDonationsNumber] = useState(null)
-  const [donDone, setDonDone] = useState("")
+  const [donDone, setDonDone] = useState("");
 
   const rest = useRef("n")
   const feed = useRef("n")
-  
-  let donor = JSON.parse(localStorage.getItem("donor"));
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const response = await api.get(`/doador/doacoes`);
-  //       setDonationsNumber(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, [donate]);
 
   function verifyReq(){
     let r = rest.current.value;
@@ -38,35 +25,31 @@ function Donor() {
   }
 
   const handleDonation = () =>{
-    setDonDone("Obrigado pela doação!")
-    rest.current.value = "n";
-    feed.current.value = "n";
-    setDonate(false);
 
     async function handleButtonClick() {
       try {
-        const response = await api.post(`doador/doacao`, {
-          data: 1
-        });
+        await api.patch(`tiposSangue/${donor.tipoSangueId.id}`);
+        const response = await api.patch(`doadores/${donor.cpf}`);
         console.log(response.data);
+        localStorage.setItem("donor", JSON.stringify(response.data));
+        setDonDone("Obrigado pela doação!");
+        rest.current.value = "n";
+        feed.current.value = "n";
+        setDonate(false);
       } catch (error) {
         console.error(error);
       }
     }
-
     handleButtonClick();
-
   }
 
   
 
   return (
     <div>
-      {/* chamar api e pegar nome -> Olá {nomedofulano}! */}
       <div className="donor-title">Olá {(donor.nome)}!</div>
       <div className="divisao">
-        {/* chamar api e pegar quantidade de vezes que o fulano já doou */}
-        <div className="donations">Você já fez ${`donationsNumber`} doações</div>
+        <div className="donations">Você já fez {`${donor.quantidadeDoacoes}`} doações!</div>
         <div className="donate">
           <p>Aqui você pode fazer uma doação:</p>
           <button onClick={handleDonation} disabled={!donate}>Doar!</button>
