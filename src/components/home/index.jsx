@@ -77,7 +77,7 @@ function Home() {
         setDonor(true);
       }, 5000);
     } catch (error) {
-      alert(error);
+      alert("error");
     }
   }
 
@@ -89,7 +89,7 @@ function Home() {
       console.log(data);
       navigate("/admin");
     } catch (error) {
-      alert(error);
+      alert('error');
       setUserNotFound("Administrador não encontrado!");
     }
   }

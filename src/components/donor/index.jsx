@@ -25,10 +25,10 @@ function Donor() {
   }
 
   const handleDonation = () =>{
-
     async function handleButtonClick() {
       try {
-        await api.patch(`tiposSangue/${donor.tipoSangueId.id}`);
+        console.log(donor)
+        await api.patch(`tiposSangue/${donor.tipoSangueId}`);
         const response = await api.patch(`doadores/${donor.cpf}`);
         console.log(response.data);
         localStorage.setItem("donor", JSON.stringify(response.data));
@@ -37,10 +37,11 @@ function Donor() {
         feed.current.value = "n";
         setDonate(false);
       } catch (error) {
-        console.error(error);
+        alert("erro");
       }
     }
     handleButtonClick();
+
   }
 
   
