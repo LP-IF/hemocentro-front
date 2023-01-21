@@ -41,10 +41,7 @@ function Donor() {
       }
     }
     handleButtonClick();
-
   }
-
-  
 
   return (
     <div>
